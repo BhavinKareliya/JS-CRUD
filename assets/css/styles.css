@@ -10,6 +10,7 @@ body {
 
 .inventory-wrapper {
     max-width: 2096px;
+    width: 100%;
 }
 
 #product-container .product-img {
@@ -58,4 +59,15 @@ body {
 
 #product-container .col {
     justify-content: center;
+}
+
+/* Remove default behaviour of number input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+button>* {
+    pointer-events: none;
 }

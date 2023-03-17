@@ -1,3 +1,55 @@
 html {
     min-height: 100vh;
 }
+
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.inventory-wrapper {
+    max-width: 2096px;
+}
+
+#product-list .product-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#product-list .product {
+    max-width: 400px !important;
+    background: #fff;
+    border: 0px;
+    text-align: center;
+}
+
+#product-list .product:hover {
+    border: 1px solid #ddd;
+    box-shadow: -1px 28px 62px -33px rgba(219, 212, 219, 1);
+}
+
+.product .product-descr {
+    font-size: 0.8rem;
+}
+
+.product .product-actions i {
+    color: black;
+    transition: all ease-in-out;
+}
+
+.product .product-actions a:hover {
+    transform: scale(2);
+}
+
+.product-img img {
+    max-width: 250px;
+    width: auto;
+}
+
+#product-list .col {
+    justify-content: center;
+}

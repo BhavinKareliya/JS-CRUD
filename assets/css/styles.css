@@ -12,7 +12,7 @@ body {
     max-width: 2096px;
 }
 
-#product-list .product-img {
+#product-container .product-img {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,14 +20,15 @@ body {
     margin-bottom: 15px;
 }
 
-#product-list .product {
+#product-container .product {
     max-width: 400px !important;
+    width: 400px;
     background: #fff;
     border: 0px;
     text-align: center;
 }
 
-#product-list .product:hover {
+#product-container .product:hover {
     border: 1px solid #ddd;
     box-shadow: -1px 28px 62px -33px rgba(219, 212, 219, 1);
 }
@@ -50,6 +51,11 @@ body {
     width: auto;
 }
 
-#product-list .col {
+.product .card-link {
+    background-color: #fff !important;
+    border: 0px;
+}
+
+#product-container .col {
     justify-content: center;
 }

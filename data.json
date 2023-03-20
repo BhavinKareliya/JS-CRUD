@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "name": "TITAN TALKS",
+    "description": "Titan Talk S AMOLED Display Digital Touch Screen Stress Monitor Premium Smart Watch with Blue coloured Strap",
+    "imgUrl": "https://staticimg.titan.co.in/Titan/Catalog/90165AP03_1.jpg?impolicy=pqmed&imwidth=640",
+    "company": "Titan",
+
+    "price": 12995
+  },
+  {
+    "id": 2,
+    "name": "Titan Smart 2",
+    "description": "Touch Screen with Black Strap, Amoled Display, SpO2 and Always on Display",
+    "imgUrl": "https://staticimg.titan.co.in/Titan/Catalog/90137AP01_1.jpg?impolicy=pqmed&imwidth=640",
+    "company": "Titan",
+    "price": "5995"
+  },
+  {
+    "id": 3,
+    "name": "Titan Smart Pro",
+    "description": "Smart Watch with Blue Strap, Body Temperature Monitor, Amoled Display and Built-In GPS",
+    "imgUrl": "https://staticimg.titan.co.in/Titan/Catalog/90149AP03_1.jpg?impolicy=pqmed&imwidth=640",
+    "company": "Titan",
+    "price": "5995"
+  },
+  {
+    "id": 4,
+    "name": "Connected Plus",
+    "description": "Hybrid Smart Analog Watch with Blue Dial & Brown Leather Strap",
+    "imgUrl": "https://staticimg.titan.co.in/Titan/Catalog/90120QL01_1.jpg?impolicy=pqmed&imwidth=640",
+    "company": "Titan",
+    "price": "6995"
+  },
+  {
+    "id": 5,
+    "name": "Octane Black Dial",
+    "description": "Silver Metal Strap Watch",
+    "imgUrl": "https://staticimg.titan.co.in/Titan/Catalog/1702KM02_1.jpg?impolicy=pqmed&imwidth=640",
+    "company": "Octane",
+    "price": "6995"
+  }
+]

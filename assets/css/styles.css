@@ -43,8 +43,14 @@ body {
     transition: all ease-in-out;
 }
 
-.product .product-actions a:hover {
-    transform: scale(2);
+.product .product-actions button:hover {
+    transform: scale(1.3);
+    transition: 170ms ease-in;
+}
+
+.product-img {
+    height: 250px;
+
 }
 
 .product-img img {

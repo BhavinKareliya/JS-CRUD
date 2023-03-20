@@ -27,11 +27,27 @@
 
         <main class="container-fluid">
             <section id="product-container">
-                <div class="product-head">
-                    <h4 class="mb-3">Inventory Products</h4>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
-                    </form>
+                <div class="product-head row">
+                    <div class="col d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-3">Inventory Products</h4>
+                        </div>
+                        <div class="d-flex">
+                            <form class="d-flex w-100" role="search">
+                                <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
+                            </form>
+                            <button class="btn btn-secondary mx-2" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#productFormModal"><i
+                                    class="bi bi-plus-square"></i></button>
+                            <div class="dropdown">
+                                <button class="btn btn-primary mx-2 py-2" id="filter-product-btn" id="filter-dropdown" data-bs-toggle="dropdown"
+                                    aria-expanded="false"><i class="bi bi-funnel-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="filter-dropdown">
+                                    <li><a class="dropdown-item" href="#">Sort by name</a></li>
+                                    <li><a class="dropdown-item" href="#">Sort by price</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row gy-2 gy-lg-4 my-3" id="product-list">
                 </div>
@@ -74,29 +90,49 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form enctype="multipart/form-data">
-                            <input type="hidden" data-id="" class="product-id">
+                        <form enctype="multipart/form-data" id="product-form" class="">
+                            <input type="hidden" class="modal-type">
+                            <input type="hidden" class="product-id" val>
                             <div class="mb-3">
-                                <label for="product-name" class="form-label">Product name</label>
-                                <input type="text" class="form-control product-name">
+                                <label for="product-name" class="form-label">*Product name</label>
+                                <input type="text" class="form-control product-name" required>
+                                <div class="invalid-feedback">
+                                    Please enter product name.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="company-name" class="form-label">*Company name</label>
+                                <input type="text" class="form-control product-company" required>
+                                <div class="invalid-feedback">
+                                    Please enter company name.
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="product-price" class="form-label">Price</label>
-                                <input type="number" class="form-control product-price">
+                                <input type="number" class="form-control product-price" required>
+                                <div class="invalid-feedback">
+                                    Please enter product price(only number allowed).
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="product-image" class="form-label">Image</label>
-                                <input type="file" class="form-control product-image" accept="image/*">
+                                <input type="file" class="form-control product-image" accept="image/*" required>
+                                <div class=" invalid-feedback">
+                                    Please enter product picture.
+                                </div>
                             </div>
-                            <div class="mb-3">
+                            <div class=" mb-3">
                                 <label for="product-description" class="form-label">Description</label>
-                                <textarea class="form-control product-descr" rows="6"></textarea>
+                                <textarea class="form-control product-descr" rows="6" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter something about product.
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="submit-product">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -115,7 +151,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success data-bs-dismiss=" modal" data-bs-dismiss="modal" aria-label="Close">Don't remove</button>
-                        <button type="button" class="btn btn-outline-danger delete-button">I'm sure</button>
+                        <button type="button" class="btn btn-outline-danger " id="modal-delete-btn" onclick="deleteBtnHandler(this)" data-bs-dismiss="modal">I'm
+                            sure</button>
                     </div>
                 </div>
             </div>

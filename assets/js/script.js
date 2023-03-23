@@ -1,3 +1,4 @@
+
 const loadData = (data = [], loadFromStore = false) => {
     const productListEle = document.getElementById('product-list');
 
@@ -6,9 +7,9 @@ const loadData = (data = [], loadFromStore = false) => {
         return;
     }
     var productData = (data.length == 0) ? JSON.parse(localStorage.getItem("products")) : data;
-
+    console.log(productData);
     let content = '';
-    productData.forEach(e => {
+    productData != null && productData.forEach(e => {
         content += `<div class="col-md-6 col-lg-4 col-xl-3 col-sm-12 d-flex justify-content-center">
                         <div class="card product">
                             <div class="card-img-top product-img">
@@ -29,7 +30,18 @@ const loadData = (data = [], loadFromStore = false) => {
     })
     productListEle.innerHTML = content;
 }
-loadData([], true)
+
+
+if (localStorage.getItem('products') == null) {
+    fetch('../../data.json')
+        .then((response) => response.json())
+        .then((json) => {
+            localStorage.setItem("products", JSON.stringify(json))
+            loadData([], true);
+        });
+} else {
+    loadData([], true);
+}
 
 // Modals
 const productFormModal = document.getElementById("productFormModal");
@@ -48,40 +60,6 @@ const searchInput = document.getElementById("search-input");
 // Forms
 const productForm = document.querySelector("#product-form");
 
-//Product view button
-const viewBtnHandler = (e) => {
-    let data = JSON.parse(localStorage.getItem("products"));
-    let productId = e.value;
-    let product = data.find(x => x.id == productId);
-
-    document.querySelector('#viewProductModal .product-company').textContent = product.company;
-    document.querySelector('#viewProductModal .product-name').textContent = product.name;
-    document.querySelector('#viewProductModal .product-descr').textContent = product.description;
-    document.querySelector('#viewProductModal .product-image').src = product.imgUrl;
-    document.querySelector('#viewProductModal .product-price').textContent = product.price;
-};
-
-//Product edit button
-const editBtnHandler = (e) => {
-    let data = JSON.parse(localStorage.getItem("products"));
-    let productId = e.value;
-    let product = data.find(x => x.id == productId);
-
-    document.querySelector('#productFormModal .modal-type').value = "Edit";
-    document.querySelector('#productFormModal .product-id').value = productId;
-    document.querySelector('#productFormModal .modal-title').textContent = "Edit Product";
-    document.querySelector('#productFormModal .product-name').value = product.name;
-    document.querySelector('#productFormModal .product-descr').value = product.description;
-    document.querySelector('#productFormModal .product-company').value = product.company;
-    document.querySelector('#productFormModal .product-price').value = product.price;
-};
-
-//Product delete button
-const deleteBtnHandler = (e) => {
-    let productId = e.value;
-    document.querySelector("#modal-delete-btn").value = productId;
-}
-
 //Product modal delete button
 deleteProductBtn.addEventListener('click', e => {
     const productId = parseInt(e.target.value);
@@ -92,8 +70,10 @@ deleteProductBtn.addEventListener('click', e => {
 
 addProductBtn.addEventListener('click', e => {
     productForm.reset();
+    productForm.classList.remove("was-validated");
     document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
     document.querySelector('#productFormModal .modal-type').value = "Create";
+    document.querySelector("#submit-product").textContent = "Add";
 })
 
 submitProductBtn.addEventListener('click', (e) => {
@@ -110,7 +90,8 @@ submitProductBtn.addEventListener('click', (e) => {
     let reader = new FileReader();
     reader.onload = function (e) {
         const dataURL = e.target.result;
-        var data = JSON.parse(localStorage.getItem("products"));
+        var localData = JSON.parse(localStorage.getItem("products"));
+        var data = (localData != null) ? localData : [];
         var obj = {
             name,
             description,
@@ -152,6 +133,41 @@ searchInput.addEventListener('input', e => {
     let val = e.target.value;
     callDebounce(val);
 })
+
+//Product view button
+const viewBtnHandler = (e) => {
+    let data = JSON.parse(localStorage.getItem("products"));
+    let productId = e.value;
+    let product = data.find(x => x.id == productId);
+
+    document.querySelector('#viewProductModal .product-company').textContent = product.company;
+    document.querySelector('#viewProductModal .product-name').textContent = product.name;
+    document.querySelector('#viewProductModal .product-descr').textContent = product.description;
+    document.querySelector('#viewProductModal .product-image').src = product.imgUrl;
+    document.querySelector('#viewProductModal .product-price').textContent = product.price;
+};
+
+//Product edit button
+const editBtnHandler = (e) => {
+    let data = JSON.parse(localStorage.getItem("products"));
+    let productId = e.value;
+    let product = data.find(x => x.id == productId);
+
+    document.querySelector('#productFormModal .modal-type').value = "Edit";
+    document.querySelector('#productFormModal .product-id').value = productId;
+    document.querySelector('#productFormModal .modal-title').textContent = "Edit Product";
+    document.querySelector('#productFormModal .product-name').value = product.name;
+    document.querySelector('#productFormModal .product-descr').value = product.description;
+    document.querySelector('#productFormModal .product-company').value = product.company;
+    document.querySelector('#productFormModal .product-price').value = product.price;
+
+};
+
+//Product delete button
+const deleteBtnHandler = (e) => {
+    let productId = e.value;
+    document.querySelector("#modal-delete-btn").value = productId;
+}
 
 const callDebounce = debounce((val) => searchFilter(val));
 

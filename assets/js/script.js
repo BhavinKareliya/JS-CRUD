@@ -1,15 +1,17 @@
-
+// On pageload event
 const loadData = (data = [], loadFromStore = false) => {
     const productListEle = document.getElementById('product-list');
 
+    //if search not found
     if (data.length == 0 && !loadFromStore) {
         productListEle.innerHTML = "<h4 class='text-danger text-center'>No Data Found</h4>";
         return;
     }
-    var productData = (data.length == 0) ? JSON.parse(localStorage.getItem("products")) : data;
-    console.log(productData);
+
+    __productData__ = (data.length == 0) ? JSON.parse(localStorage.getItem("products")) : data;
+
     let content = '';
-    productData != null && productData.forEach(e => {
+    __productData__ != null && __productData__.forEach(e => {
         content += `<div class="col-md-6 col-lg-4 col-xl-3 col-sm-12 d-flex justify-content-center">
                         <div class="card product">
                             <div class="card-img-top product-img">
@@ -31,13 +33,15 @@ const loadData = (data = [], loadFromStore = false) => {
     productListEle.innerHTML = content;
 }
 
+let __productData__ = JSON.parse(localStorage.getItem("products"));
 
-if (localStorage.getItem('products') == null) {
+if (__productData__ == null) {
     fetch('../../data.json')
         .then((response) => response.json())
         .then((json) => {
-            localStorage.setItem("products", JSON.stringify(json))
-            loadData([], true);
+            __productData__ = JSON.stringify(json);
+            localStorage.setItem("products", __productData__)
+            loadData(__productData__);
         });
 } else {
     loadData([], true);
@@ -56,28 +60,18 @@ const sortProductBtn = document.querySelectorAll(".dropdown-menu a");
 
 // Inputs
 const searchInput = document.getElementById("search-input");
+const modalImage = document.querySelector("#productFormModal .product-image");
+
+//Inputs Error
+const imgError = document.getElementById('invalid-image-error');
 
 // Forms
 const productForm = document.querySelector("#product-form");
 
-//Product modal delete button
-deleteProductBtn.addEventListener('click', e => {
-    const productId = parseInt(e.target.value);
-    var data = JSON.parse(localStorage.getItem("products")).filter(e => parseInt(e.id) !== productId);
-    localStorage.setItem("products", JSON.stringify(data));
-    loadData(data);
-})
-
-addProductBtn.addEventListener('click', e => {
-    productForm.reset();
-    productForm.classList.remove("was-validated");
-    document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
-    document.querySelector('#productFormModal .modal-type').value = "Create";
-    document.querySelector("#submit-product").textContent = "Add";
-})
-
+//Modal form submit event
 submitProductBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    productForm.classList.add('was-validated');
 
     var modalType = document.querySelector('#productFormModal input.modal-type').value;
     var name = document.querySelector('#productFormModal input.product-name').value;
@@ -85,39 +79,61 @@ submitProductBtn.addEventListener('click', (e) => {
     var company = document.querySelector('#productFormModal input.product-company').value;
     var image = document.querySelector('#productFormModal input.product-image');
     var description = document.querySelector('#productFormModal .product-descr').value;
+    var obj = { name, description, company, price };
 
     let file = image.files[0];
+    //validate file type and size
+    if (file != undefined) {
+        var extension = file.name.split('.').pop()
+        var size = file.size;
+
+        if (extension != 'png' || size > 204800) {
+            imgError.classList.remove('d-none');
+            image.classList.add('invalid');
+            return;
+        }
+        else {
+            imgError.classList.add('d-none');
+            image.classList.remove('invalid');
+        }
+    }
+
     let reader = new FileReader();
+    //on load event on file input
     reader.onload = function (e) {
         const dataURL = e.target.result;
-        var localData = JSON.parse(localStorage.getItem("products"));
-        var data = (localData != null) ? localData : [];
-        var obj = {
-            name,
-            description,
-            imgUrl: dataURL,
-            company,
-            price
-        }
-        if (modalType == 'Create') {
-            obj.id = Math.round((Math.random() * 10000));
-        } else {
-            obj.id = document.querySelector('#productFormModal input.product-id').value;
-            var data = data.filter(e => e.id !== parseInt(obj.id));
-        }
-        data.push(obj);
-        localStorage.setItem("products", JSON.stringify(data));
+        obj.imgUrl = dataURL;
+
+        if (modalType == 'Create') obj.id = Math.round((Math.random() * 10000));
+        else obj.id = document.querySelector('#productFormModal input.product-id').value;
+
+        __productData__ = __productData__.filter(e => e.id != obj.id);
+
+        productForm.classList.remove('was-validated');
+        //Call pushdata
+        pushData(obj)
+
+
         document.querySelector("#productFormModal .btn-close").click();
-        loadData(data);
     }
-    productForm.classList.add("was-validated");
     if (file) reader.readAsDataURL(file);
+
+    if (!file && modalType == 'Edit') {
+        var currId = parseInt(document.querySelector('#productFormModal input.product-id').value);
+        obj.id = currId;
+        var oldProduct = __productData__.find((e) => e.id == currId);
+        obj.imgUrl = oldProduct.imgUrl;
+        __productData__ = __productData__.filter(e => e.id != obj.id);
+        productForm.classList.remove('was-validated');
+        pushData(obj)
+        document.querySelector("#productFormModal .btn-close").click();
+    }
 })
 
+//Sort Product
 sortProductBtn.forEach(btn => {
     btn.addEventListener('click', e => {
         var data = JSON.parse(localStorage.getItem("products"))
-        console.log(data);
         if (e.target.textContent == 'Sort by name')
             data.sort((a, b) => (a.name > b.name) ? 1 : -1);
         else
@@ -128,11 +144,25 @@ sortProductBtn.forEach(btn => {
     })
 });
 
-//Search user inputs in products
-searchInput.addEventListener('input', e => {
-    let val = e.target.value;
-    callDebounce(val);
+//Create product button
+addProductBtn.addEventListener('click', e => {
+    productForm.reset();
+    productForm.classList.remove("was-validated");
+    imgError.classList.add('d-none');
+    modalImage.classList.remove('invalid');
+    document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
+    document.querySelector('#productFormModal .modal-type').value = "Create";
+    submitProductBtn.textContent = "Add Product";
 })
+
+//Product array data pusher
+const pushData = (data) => {
+    productForm.reset();
+    imgError.classList.add('d-none');
+    __productData__.push(data);
+    localStorage.setItem("products", JSON.stringify(__productData__));
+    loadData(__productData__);
+}
 
 //Product view button
 const viewBtnHandler = (e) => {
@@ -152,7 +182,6 @@ const editBtnHandler = (e) => {
     let data = JSON.parse(localStorage.getItem("products"));
     let productId = e.value;
     let product = data.find(x => x.id == productId);
-
     document.querySelector('#productFormModal .modal-type').value = "Edit";
     document.querySelector('#productFormModal .product-id').value = productId;
     document.querySelector('#productFormModal .modal-title').textContent = "Edit Product";
@@ -160,8 +189,22 @@ const editBtnHandler = (e) => {
     document.querySelector('#productFormModal .product-descr').value = product.description;
     document.querySelector('#productFormModal .product-company').value = product.company;
     document.querySelector('#productFormModal .product-price').value = product.price;
-
+    submitProductBtn.textContent = "Save changes";
 };
+
+//Product modal delete button
+deleteProductBtn.addEventListener('click', e => {
+    const productId = parseInt(e.target.value);
+    var data = JSON.parse(localStorage.getItem("products")).filter(e => parseInt(e.id) !== productId);
+    localStorage.setItem("products", JSON.stringify(data));
+    loadData(data);
+})
+
+//Search user inputs in products
+searchInput.addEventListener('input', e => {
+    let val = e.target.value;
+    callDebounce(val);
+})
 
 //Product delete button
 const deleteBtnHandler = (e) => {

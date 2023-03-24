@@ -42,7 +42,7 @@
                                 <button class="btn btn-primary mx-2 py-2" id="filter-product-btn" id="filter-dropdown" data-bs-toggle="dropdown"
                                     aria-expanded="false"><i class="bi bi-funnel-fill"></i></button>
                                 <ul class="dropdown-menu" aria-labelledby="filter-dropdown">
-                                    <li><a class="dropdown-item" href="#">Sort by name</a></li>
+                                    <li><a class="dropdown-item" id="sort-by-name" href="#">Sort by name</a></li>
                                     <li><a class="dropdown-item" href="#">Sort by price</a></li>
                                 </ul>
                             </div>
@@ -119,6 +119,9 @@
                                 <input type="file" class="form-control product-image" accept="image/png" required>
                                 <div class=" invalid-feedback">
                                     Please enter product picture.
+                                </div>
+                                <div class="invalid-image d-none" id="invalid-image-error">
+                                    Please select '<b>*.png</b>' image only (2Mb size limit)
                                 </div>
                             </div>
                             <div class=" mb-3">

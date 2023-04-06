@@ -61,6 +61,7 @@ const sortProductBtn = document.querySelectorAll(".dropdown-menu a");
 // Inputs
 const searchInput = document.getElementById("search-input");
 const modalImage = document.querySelector("#productFormModal .product-image");
+const modalPrevImage = document.querySelector("#productFormModal #img-preview img");
 
 //Inputs Error
 const imgError = document.getElementById('invalid-image-error');
@@ -68,66 +69,35 @@ const imgError = document.getElementById('invalid-image-error');
 // Forms
 const productForm = document.querySelector("#product-form");
 
+// Boolean
+let isValid = false, isEditMode = false;
+
 //Modal form submit event
 submitProductBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    productForm.classList.add('was-validated');
+    if (!productForm.checkValidity() || !isValid) {
+        e.preventDefault()
+        productForm.classList.add("was-validated");
+        return
+    }
 
     var modalType = document.querySelector('#productFormModal input.modal-type').value;
     var name = document.querySelector('#productFormModal input.product-name').value;
     var price = parseFloat(document.querySelector('#productFormModal input.product-price').value).toFixed(2);
     var company = document.querySelector('#productFormModal input.product-company').value;
-    var image = document.querySelector('#productFormModal input.product-image');
+    var image = modalPrevImage.src;
     var description = document.querySelector('#productFormModal .product-descr').value;
-    var obj = { name, description, company, price };
+    var obj = { name, description, company, price, imgUrl: image };
 
-    let file = image.files[0];
-    //validate file type and size
-    if (file != undefined) {
-        var extension = file.name.split('.').pop()
-        var size = file.size;
+    if (modalType == 'Create') obj.id = Math.round((Math.random() * 10000));
 
-        if (extension != 'png' || size > 204800) {
-            imgError.classList.remove('d-none');
-            image.classList.add('invalid');
-            return;
-        }
-        else {
-            imgError.classList.add('d-none');
-            image.classList.remove('invalid');
-        }
-    }
-
-    let reader = new FileReader();
-    //on load event on file input
-    reader.onload = function (e) {
-        const dataURL = e.target.result;
-        obj.imgUrl = dataURL;
-
-        if (modalType == 'Create') obj.id = Math.round((Math.random() * 10000));
-        else obj.id = document.querySelector('#productFormModal input.product-id').value;
-
-        __productData__ = __productData__.filter(e => e.id != obj.id);
-
-        productForm.classList.remove('was-validated');
-        //Call pushdata
-        pushData(obj)
-
-
-        document.querySelector("#productFormModal .btn-close").click();
-    }
-    if (file) reader.readAsDataURL(file);
-
-    if (!file && modalType == 'Edit') {
+    if (modalType == 'Edit') {
         var currId = parseInt(document.querySelector('#productFormModal input.product-id').value);
         obj.id = currId;
-        var oldProduct = __productData__.find((e) => e.id == currId);
-        obj.imgUrl = oldProduct.imgUrl;
         __productData__ = __productData__.filter(e => e.id != obj.id);
-        productForm.classList.remove('was-validated');
-        pushData(obj)
-        document.querySelector("#productFormModal .btn-close").click();
     }
+    document.querySelector("#productFormModal .btn-close").click();
+    productForm.reset();
+    pushData(obj)
 })
 
 //Sort Product
@@ -137,7 +107,7 @@ sortProductBtn.forEach(btn => {
         if (e.target.textContent == 'Sort by name')
             data.sort((a, b) => (a.name > b.name) ? 1 : -1);
         else
-            data.sort((a, b) => (a.price < b.price) ? 1 : -1);
+            data.sort((a, b) => (parseFloat(a.price) < parseFloat(b.price)) ? 1 : -1);
 
         loadData(data);
         localStorage.setItem("products", JSON.stringify(data));
@@ -146,8 +116,10 @@ sortProductBtn.forEach(btn => {
 
 //Create product button
 addProductBtn.addEventListener('click', e => {
-    productForm.reset();
+    isEditMode = false;
     productForm.classList.remove("was-validated");
+    productForm.reset();
+    modalPrevImage.src = "";
     imgError.classList.add('d-none');
     modalImage.classList.remove('invalid');
     document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
@@ -179,7 +151,13 @@ const viewBtnHandler = (e) => {
 
 //Product edit button
 const editBtnHandler = (e) => {
+    productForm.reset();
+    imgError.classList.add('d-none');
+    isValid = true;
+    isEditMode = true;
+
     let data = JSON.parse(localStorage.getItem("products"));
+
     let productId = e.value;
     let product = data.find(x => x.id == productId);
     document.querySelector('#productFormModal .modal-type').value = "Edit";
@@ -189,6 +167,8 @@ const editBtnHandler = (e) => {
     document.querySelector('#productFormModal .product-descr').value = product.description;
     document.querySelector('#productFormModal .product-company').value = product.company;
     document.querySelector('#productFormModal .product-price').value = product.price;
+    console.log();
+    modalPrevImage.src = product.imgUrl;
     submitProductBtn.textContent = "Save changes";
 };
 
@@ -229,3 +209,45 @@ function searchFilter(val) {
     let filteredData = data.filter(e => e.id == val || e.name.toLowerCase().includes(val.toLowerCase()));
     loadData(filteredData)
 }
+
+modalImage.addEventListener('change', (e) => {
+    e.preventDefault();
+    let file = e.target.files[0];
+    var modalType = document.querySelector('#productFormModal input.modal-type').value;
+    var image = document.querySelector('#productFormModal input.product-image');
+    var obj = {};
+
+    let reader = new FileReader();
+    //on load event on file input
+    reader.onload = function (e) {
+        const dataURL = e.target.result;
+        obj.imgUrl = dataURL;
+
+        //Set ObjectId
+        if (modalType == 'Create') obj.id = Math.round((Math.random() * 10000));
+        else obj.id = document.querySelector('#productFormModal input.product-id').value;
+
+        __productData__ = __productData__.filter(e => e.id != obj.id);
+        modalPrevImage.src = obj.imgUrl;
+    }
+
+    //validate file type and size
+    if (file != undefined) {
+        var extension = file.name.split('.').pop()
+        var size = file.size;
+
+        if (extension != 'png' || size > 2097152) {
+            imgError.classList.remove('d-none');
+            image.classList.add('invalid');
+            isValid = false;
+            return;
+        }
+        else {
+            imgError.classList.add('d-none');
+            image.classList.remove('invalid');
+            isValid = true;
+        }
+        reader.readAsDataURL(file);
+    }
+
+})

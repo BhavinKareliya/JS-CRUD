@@ -11,8 +11,7 @@
     <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
 
     <!-- External Links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 
@@ -36,11 +35,9 @@
                             <form class="d-flex w-100" role="search" onsubmit="return false;">
                                 <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
                             </form>
-                            <button class="btn btn-secondary mx-2" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#productFormModal"><i
-                                    class="bi bi-plus-square"></i></button>
+                            <button class="btn btn-secondary mx-2" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#productFormModal"><i class="bi bi-plus-square"></i></button>
                             <div class="dropdown">
-                                <button class="btn btn-primary mx-2 py-2" id="filter-product-btn" id="filter-dropdown" data-bs-toggle="dropdown"
-                                    aria-expanded="false"><i class="bi bi-funnel-fill"></i></button>
+                                <button class="btn btn-primary mx-2 py-2" id="filter-product-btn" id="filter-dropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-funnel-fill"></i></button>
                                 <ul class="dropdown-menu" aria-labelledby="filter-dropdown">
                                     <li><a class="dropdown-item" id="sort-by-name" href="#">Sort by name</a></li>
                                     <li><a class="dropdown-item" href="#">Sort by price</a></li>
@@ -66,8 +63,7 @@
                         <div class="row">
                             <div class="col-md-6 ">
                                 <div class="view-modal-image d-flex justify-content-center">
-                                    <img class="product-image" src="https://staticimg.titan.co.in/Titan/Catalog/90137AP01_1.jpg?impolicy=pqmed&imwidth=640"
-                                        alt="" srcset="" width="250px">
+                                    <img class="product-image" src="https://staticimg.titan.co.in/Titan/Catalog/90137AP01_1.jpg?impolicy=pqmed&imwidth=640" alt="" srcset="" width="250px">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -90,7 +86,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form enctype="multipart/form-data" id="product-form" class="">
+                        <form enctype="multipart/form-data" id="product-form" novalidate>
                             <input type="hidden" class="modal-type">
                             <input type="hidden" class="product-id" val>
                             <div class="mb-3">
@@ -102,7 +98,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="company-name" class="form-label">*Company name</label>
-                                <input type="text" class="form-control product-company" required>
+                                <input type="text" class="form-control product-company" required="false">
                                 <div class="invalid-feedback">
                                     Please enter company name.
                                 </div>
@@ -116,12 +112,17 @@
                             </div>
                             <div class="mb-3">
                                 <label for="product-image" class="form-label">Image</label>
-                                <input type="file" class="form-control product-image" accept="image/png" required>
-                                <div class=" invalid-feedback">
-                                    Please enter product picture.
-                                </div>
-                                <div class="invalid-image d-none" id="invalid-image-error">
-                                    Please select '<b>*.png</b>' image only (2Mb size limit)
+                                <div class=" position-relative">
+                                    <input type="file" class="product-image">
+                                    <div class=" invalid-feedback">
+                                        Please enter product picture.
+                                    </div>
+                                    <div class="invalid-image d-none mb-1" id="invalid-image-error">
+                                        Please select '<b>*.png</b>' image only (2Mb size limit)
+                                    </div>
+                                    <div id="img-preview">
+                                        <img width="30" />
+                                    </div>
                                 </div>
                             </div>
                             <div class=" mb-3">
@@ -165,8 +166,7 @@
 
     <script src="./assets/js/script.js"></script>
     <!-- External Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 
 </html>

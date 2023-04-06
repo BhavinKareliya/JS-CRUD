@@ -121,7 +121,7 @@ button>* {
     transform: scale(8) translateX(-40%);
 }
 
-.product-image {
+#product-form .product-image {
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
@@ -138,9 +138,3 @@ button>* {
     border-radius: 0.375rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
-
-/* .form-control.no-validate:valid {
-    border-color: #000000;
-    padding-right: .75rem;
-    background: none;
-} */

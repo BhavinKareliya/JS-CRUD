@@ -1,4 +1,5 @@
 // On pageload event
+debugger;
 const loadData = (data = [], loadFromStore = false) => {
     const productListEle = document.getElementById('product-list');
 
@@ -41,6 +42,7 @@ if (__productData__ == null) {
         .then((json) => {
             __productData__ = JSON.stringify(json);
             localStorage.setItem("products", __productData__)
+            debugger
             loadData(__productData__);
         });
 } else {

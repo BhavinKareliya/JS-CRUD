@@ -1,3 +1,146 @@
 html {
     min-height: 100vh;
 }
+
+body {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.inventory-wrapper {
+    max-width: 2096px;
+    width: 100%;
+}
+
+#product-container .product-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#product-container .product {
+    max-width: 400px !important;
+    width: 400px;
+    background: #fff;
+    border: 0px;
+    text-align: center;
+    border: 1px solid #fff;
+
+}
+
+#product-container .product:hover {
+    border: 1px solid #ddd;
+    box-shadow: -1px 28px 62px -33px rgba(219, 212, 219, 1);
+}
+
+.product .product-descr {
+    font-size: 0.8rem;
+    min-height: 40px;
+}
+
+.product .product-actions i {
+    color: black;
+    transition: all ease-in-out;
+}
+
+.product .product-actions button:hover {
+    transform: scale(1.3);
+    transition: 170ms ease-in;
+}
+
+.product-img {
+    height: 250px;
+
+}
+
+.product-img img {
+    max-width: 250px;
+    width: auto;
+}
+
+.product .card-link {
+    background-color: #fff !important;
+    border: 0px;
+}
+
+#product-container .col {
+    justify-content: center;
+}
+
+.form-control.valid {
+    border-color: #198754;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem rem) calc(0.75em + 0.375rem);
+}
+
+.invalid-image {
+    width: 100%;
+    margin-top: 0.25rem rem;
+    font-size: .875em;
+    color: #b02a37;
+}
+
+/* Remove default behaviour of number input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+button>* {
+    pointer-events: none;
+}
+
+#img-preview {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+#img-preview img {
+    transition: 1s;
+}
+
+#img-preview img:hover {
+    box-shadow: 2px -2px 57px -3px rgba(173, 106, 173, 1);
+    transform: scale(8) translateX(-40%);
+}
+
+.product-image {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-form-control-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+/* .form-control.no-validate:valid {
+    border-color: #000000;
+    padding-right: .75rem;
+    background: none;
+} */

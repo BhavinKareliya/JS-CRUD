@@ -11,18 +11,162 @@
     <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
 
     <!-- External Links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
 
-<body class="min-vh-100 bg-light">
-    <div class="min-vh-100 d-flex justify-content-center align-items-center">
-        <h1>Home page</h1>
+<body class="bg-light px-md-5 px-sm-1 mb-5">
+    <div class="inventory-wrapper">
+        <header class="d-flex justify-content-center align-items-center my-4">
+            <h1 id="page-title">Inventory Management</h1>
+
+        </header>
+
+        <hr class="divider">
+
+        <main class="container-fluid">
+            <section id="product-container">
+                <div class="product-head row">
+                    <div class="d-md-flex justify-content-between">
+                        <div class="col-md-6 text-sm-center text-lg-start">
+                            <h4 class="mb-3">Inventory Products</h4>
+                        </div>
+                        <div class="d-flex">
+                            <form class="d-flex w-100" role="search" onsubmit="return false;">
+                                <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search">
+                            </form>
+                            <button class="btn btn-secondary mx-2" id="add-product-btn" data-bs-toggle="modal" data-bs-target="#productFormModal"><i class="bi bi-plus-square"></i></button>
+                            <div class="dropdown">
+                                <button class="btn btn-primary mx-2 py-2" id="filter-product-btn" id="filter-dropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-funnel-fill"></i></button>
+                                <ul class="dropdown-menu" aria-labelledby="filter-dropdown">
+                                    <li><a class="dropdown-item" id="sort-by-name" href="#">Sort by name</a></li>
+                                    <li><a class="dropdown-item" href="#">Sort by price</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gy-2 gy-lg-4 my-3" id="product-list">
+                </div>
+            </section>
+        </main>
+
+        <!-- View product Modal -->
+        <div class="modal fade modal-lg" id="viewProductModal" tabindex="-1" aria-labelledby="viewProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 product-company" id="viewProductModalLabel">TITAN</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body mb-3">
+                        <div class="row">
+                            <div class="col-md-6 ">
+                                <div class="view-modal-image d-flex justify-content-center">
+                                    <img class="product-image" src="https://staticimg.titan.co.in/Titan/Catalog/90137AP01_1.jpg?impolicy=pqmed&imwidth=640" alt="" srcset="" width="250px">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="product-name">Titan Smart 2</h3>
+                                <h1 class="my-4 product-price">₹5995</h1>
+                                <p class="product-descr">Touch Screen with Black Strap, Amoled Display, SpO2 and Always on Display</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit product Modal -->
+        <div class="modal fade" id="productFormModal" tabindex="-1" aria-labelledby="productFormModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="productFormModalLabel">Add Product</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form enctype="multipart/form-data" id="product-form" novalidate>
+                            <input type="hidden" class="modal-type">
+                            <input type="hidden" class="product-id" val>
+                            <div class="mb-3">
+                                <label for="product-name" class="form-label">*Product name</label>
+                                <input type="text" class="form-control product-name" required>
+                                <div class="invalid-feedback">
+                                    Please enter product name.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="company-name" class="form-label">*Company name</label>
+                                <input type="text" class="form-control product-company" required="false">
+                                <div class="invalid-feedback">
+                                    Please enter company name.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-price" class="form-label">Price</label>
+                                <input type="number" class="form-control product-price" required>
+                                <div class="invalid-feedback">
+                                    Please enter product price(only number allowed).
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="product-image" class="form-label">Image</label>
+                                <div class=" position-relative">
+                                    <input type="file" class="product-image">
+                                    <div class=" invalid-feedback">
+                                        Please enter product picture.
+                                    </div>
+                                    <div class="invalid-image d-none mb-1" id="invalid-image-error">
+                                        Please select '<b>*.png</b>' image only (2Mb size limit)
+                                    </div>
+                                    <div id="img-preview">
+                                        <img width="30" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" mb-3">
+                                <label for="product-description" class="form-label">Description</label>
+                                <textarea class="form-control product-descr" rows="6" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter something about product.
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submit-product">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Delete product Modal -->
+        <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteProductModalLabel">Please Verify ..</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="text-danger">Are you sure to remove this product?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success data-bs-dismiss=" modal" data-bs-dismiss="modal" aria-label="Close">Don't remove</button>
+                        <button type="button" class="btn btn-outline-danger " id="modal-delete-btn" onclick="deleteBtnHandler(this)" data-bs-dismiss="modal">I'm
+                            sure</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+
+    <script src="./assets/js/script.js"></script>
     <!-- External Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 
 </html>

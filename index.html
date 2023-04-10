@@ -107,15 +107,15 @@
                                 <label for="product-price" class="form-label">Price</label>
                                 <input type="number" class="form-control product-price" required>
                                 <div class="invalid-feedback">
-                                    Please enter product price(only number allowed).
+                                    Please enter product price(only positive number allowed).
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="product-image" class="form-label">Image</label>
                                 <div class=" position-relative">
-                                    <input type="file" class="product-image">
+                                    <input type="file" class="product-image form-control">
                                     <div class=" invalid-feedback">
-                                        Please enter product picture.
+                                        Please select product picture.
                                     </div>
                                     <div class="invalid-image d-none mb-1" id="invalid-image-error">
                                         Please select '<b>*.png</b>' image only (2Mb size limit)

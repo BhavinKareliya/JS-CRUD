@@ -1,8 +1,4 @@
 // On pageload event
-<<<<<<< HEAD
-debugger;
-=======
->>>>>>> main
 const loadData = (data = [], loadFromStore = false) => {
     const productListEle = document.getElementById('product-list');
 
@@ -45,10 +41,6 @@ if (__productData__ == null) {
         .then((json) => {
             __productData__ = JSON.stringify(json);
             localStorage.setItem("products", __productData__)
-<<<<<<< HEAD
-            debugger
-=======
->>>>>>> main
             loadData(__productData__);
         });
 } else {
@@ -115,25 +107,12 @@ sortProductBtn.forEach(btn => {
         if (e.target.textContent == 'Sort by name')
             data.sort((a, b) => (a.name > b.name) ? 1 : -1);
         else
-            data.sort((a, b) => (parseFloat(a.price) < parseFloat(b.price)) ? 1 : -1);
+            data.sort((a, b) => a.price - b.price);
 
         loadData(data);
         localStorage.setItem("products", JSON.stringify(data));
     })
 });
-
-//Create product button
-addProductBtn.addEventListener('click', e => {
-    isEditMode = false;
-    productForm.classList.remove("was-validated");
-    productForm.reset();
-    modalPrevImage.src = "";
-    imgError.classList.add('d-none');
-    modalImage.classList.remove('invalid');
-    document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
-    document.querySelector('#productFormModal .modal-type').value = "Create";
-    submitProductBtn.textContent = "Add Product";
-})
 
 //Product array data pusher
 const pushData = (data) => {
@@ -157,6 +136,21 @@ const viewBtnHandler = (e) => {
     document.querySelector('#viewProductModal .product-price').textContent = product.price;
 };
 
+//Create product button
+addProductBtn.addEventListener('click', e => {
+    isEditMode = false;
+    modalImage.required = true;
+    productForm.classList.remove("was-validated");
+    productForm.reset();
+    modalPrevImage.src = "";
+    imgError.classList.add('d-none');
+    modalImage.classList.remove('invalid');
+    document.querySelector('#productFormModal .modal-title').textContent = "Add New Product";
+    document.querySelector('#productFormModal .modal-type').value = "Create";
+    modalImage.classList.add("form-control");
+    submitProductBtn.textContent = "Add Product";
+})
+
 //Product edit button
 const editBtnHandler = (e) => {
     productForm.reset();
@@ -175,7 +169,7 @@ const editBtnHandler = (e) => {
     document.querySelector('#productFormModal .product-descr').value = product.description;
     document.querySelector('#productFormModal .product-company').value = product.company;
     document.querySelector('#productFormModal .product-price').value = product.price;
-    console.log();
+    modalImage.required = false;
     modalPrevImage.src = product.imgUrl;
     submitProductBtn.textContent = "Save changes";
 };
@@ -247,6 +241,7 @@ modalImage.addEventListener('change', (e) => {
         if (extension != 'png' || size > 2097152) {
             imgError.classList.remove('d-none');
             image.classList.add('invalid');
+            modalImage.value = null;
             isValid = false;
             return;
         }

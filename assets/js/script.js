@@ -242,6 +242,7 @@ modalImage.addEventListener('change', (e) => {
             imgError.classList.remove('d-none');
             image.classList.add('invalid');
             modalImage.value = null;
+            modalPrevImage.removeAttribute("src");
             isValid = false;
             return;
         }
